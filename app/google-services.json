@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "308247108481",
+    "project_id": "splitup-a6dee",
+    "storage_bucket": "splitup-a6dee.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308247108481:android:7cca59010e51e829d7e680",
+        "android_client_info": {
+          "package_name": "com.techtool.splitup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_1lSqity6G6J4TiQICdX9JEOaqDjAFvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Splitup" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#5B6EF5</item>
+        <item name="colorPrimaryDark">#1A202C</item>
+        <item name="colorAccent">#8B5CF6</item>
+        <item name="android:statusBarColor">#1A202C</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>
