@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Splitup">
 
         <activity
-            android:name=".SignUpActivity"
+            android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Splitup">
             <intent-filter>
@@ -26,7 +26,37 @@
         </activity>
 
         <activity
+            android:name=".SignUpActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Splitup" />
+
+        <activity
             android:name=".SignInActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Splitup" />
+
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Splitup" />
+
+        <activity
+            android:name=".AllGroupsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Splitup" />
+
+        <activity
+            android:name=".AddExpenseActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Splitup" />
+
+        <activity
+            android:name=".SettleUpActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Splitup" />
+
+        <activity
+            android:name=".GroupDetailsActivity"
             android:exported="false"
             android:theme="@style/Theme.Splitup" />
 

@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Splitup" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.Splitup" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">#5B6EF5</item>
         <item name="colorPrimaryDark">#1A202C</item>
         <item name="colorAccent">#8B5CF6</item>
         <item name="android:statusBarColor">#1A202C</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="colorPrimaryVariant">#1A202C</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSecondary">#8B5CF6</item>
+        <item name="colorSecondaryVariant">#6366F1</item>
+        <item name="colorOnSecondary">@android:color/white</item>
+        <item name="android:windowBackground">#0F172A</item>
+        <item name="colorSurface">#1E293B</item>
+        <item name="colorOnSurface">@android:color/white</item>
     </style>
 </resources>
