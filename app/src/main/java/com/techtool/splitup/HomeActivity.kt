@@ -23,7 +23,9 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var groupAdapter: GroupAdapter
 
     private val groups = mutableListOf<Pair<Group, List<Member>>>()
-    private val allExpenses = mutableListOf<Expense>()
+    private val allExpenses = mutableMapOf<String, Expense>()
+    private val expenseListeners = mutableMapOf<String, ValueEventListener>()
+    private val groupListeners = mutableMapOf<String, ValueEventListener>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,23 @@ class HomeActivity : AppCompatActivity() {
         setupRecyclerView()
         loadUserData()
         loadUserGroups()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Reload groups when returning to this activity
+        loadUserGroups()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clean up listeners
+        expenseListeners.forEach { (expenseId, listener) ->
+            database.child("expenses").child(expenseId).removeEventListener(listener)
+        }
+        groupListeners.forEach { (groupId, listener) ->
+            database.child("groups").child(groupId).removeEventListener(listener)
+        }
     }
 
     private fun setupUI() {
@@ -73,7 +92,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        groupAdapter = GroupAdapter(groups) { group ->
+        groupAdapter = GroupAdapter(groups, allExpenses) { group ->
             // Open group details
             val intent = Intent(this, GroupDetailsActivity::class.java)
             intent.putExtra(GroupDetailsActivity.EXTRA_GROUP_ID, group.id)
@@ -129,7 +148,7 @@ class HomeActivity : AppCompatActivity() {
                     if (groupIds.isEmpty()) {
                         groups.clear()
                         groupAdapter.updateGroups(groups)
-                        updateBalances()
+                        displayBalances(0.0, 0.0)
                         return
                     }
 
@@ -148,36 +167,52 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun loadGroups(groupIds: List<String>) {
+        // Clean up old listeners
+        groupListeners.forEach { (groupId, listener) ->
+            if (groupId !in groupIds) {
+                database.child("groups").child(groupId).removeEventListener(listener)
+                groupListeners.remove(groupId)
+            }
+        }
+
         groups.clear()
+        var processedGroups = 0
 
         groupIds.forEach { groupId ->
-            database.child("groups").child(groupId)
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val group = snapshot.getValue(Group::class.java)
-                        if (group != null) {
-                            loadGroupMembers(group)
+            val listener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val group = snapshot.getValue(Group::class.java)
+                    if (group != null) {
+                        loadGroupMembers(group) {
+                            processedGroups++
+                            if (processedGroups == groupIds.size) {
+                                loadAllExpenses()
+                            }
                         }
                     }
+                }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(
-                            this@HomeActivity,
-                            "Error loading group: ${error.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                })
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(
+                        this@HomeActivity,
+                        "Error loading group: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            groupListeners[groupId] = listener
+            database.child("groups").child(groupId).addValueEventListener(listener)
         }
     }
 
-    private fun loadGroupMembers(group: Group) {
+    private fun loadGroupMembers(group: Group, onComplete: () -> Unit) {
         val members = mutableListOf<Member>()
 
         if (group.memberIds.isEmpty()) {
-            groups.add(Pair(group, members))
-            groupAdapter.updateGroups(groups.take(3)) // Show only first 3
-            updateBalances()
+            // Update or add group to list
+            updateGroupInList(group, members)
+            onComplete()
             return
         }
 
@@ -193,77 +228,81 @@ class HomeActivity : AppCompatActivity() {
 
                         loadedCount++
                         if (loadedCount == group.memberIds.size) {
-                            groups.add(Pair(group, members))
-                            groupAdapter.updateGroups(groups.take(3)) // Show only first 3
-                            updateBalances()
+                            updateGroupInList(group, members)
+                            onComplete()
                         }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
                         loadedCount++
                         if (loadedCount == group.memberIds.size) {
-                            groups.add(Pair(group, members))
-                            groupAdapter.updateGroups(groups.take(3))
-                            updateBalances()
+                            updateGroupInList(group, members)
+                            onComplete()
                         }
                     }
                 })
         }
     }
 
-    private fun updateBalances() {
-        // Load all expenses from all groups
-        allExpenses.clear()
+    private fun updateGroupInList(group: Group, members: List<Member>) {
+        // Remove old group with same id
+        groups.removeAll { it.first.id == group.id }
+
+        // Add updated group
+        groups.add(Pair(group, members))
+
+        // Update UI with expenses
+        groupAdapter.updateGroups(groups.take(3), allExpenses) // Show only first 3
+    }
+
+    private fun loadAllExpenses() {
+        // Clean up old expense listeners
+        val allExpenseIds = groups.flatMap { it.first.expenseIds }.toSet()
+        expenseListeners.keys.filter { it !in allExpenseIds }.forEach { expenseId ->
+            expenseListeners[expenseId]?.let { listener ->
+                database.child("expenses").child(expenseId).removeEventListener(listener)
+            }
+            expenseListeners.remove(expenseId)
+            allExpenses.remove(expenseId)
+        }
 
         if (groups.isEmpty()) {
-            displayBalances(0.0, 0.0)
+            calculateBalances()
             return
         }
 
-        var loadedGroups = 0
-        groups.forEach { (group, _) ->
-            if (group.expenseIds.isEmpty()) {
-                loadedGroups++
-                if (loadedGroups == groups.size) {
-                    calculateBalances()
+        // Load expenses from all groups
+        val expenseIds = groups.flatMap { it.first.expenseIds }.toSet()
+
+        if (expenseIds.isEmpty()) {
+            allExpenses.clear()
+            calculateBalances()
+            return
+        }
+
+        expenseIds.forEach { expenseId ->
+            if (!expenseListeners.containsKey(expenseId)) {
+                val listener = object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val expense = snapshot.getValue(Expense::class.java)
+
+                        if (expense != null && !expense.isSettled) {
+                            allExpenses[expenseId] = expense
+                        } else {
+                            allExpenses.remove(expenseId)
+                        }
+
+                        // Recalculate balances on every expense change
+                        calculateBalances()
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        // Handle error
+                    }
                 }
-                return@forEach
-            }
 
-            var loadedExpenses = 0
-            group.expenseIds.forEach { expenseId ->
-                database.child("expenses").child(expenseId)
-                    .addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val expense = snapshot.getValue(Expense::class.java)
-
-                            // Remove old expense if exists
-                            allExpenses.removeAll { it.id == expenseId }
-
-                            // Add new expense if not settled
-                            if (expense != null && !expense.isSettled) {
-                                allExpenses.add(expense)
-                            }
-
-                            loadedExpenses++
-                            if (loadedExpenses == group.expenseIds.size) {
-                                loadedGroups++
-                                if (loadedGroups == groups.size) {
-                                    calculateBalances()
-                                }
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            loadedExpenses++
-                            if (loadedExpenses == group.expenseIds.size) {
-                                loadedGroups++
-                                if (loadedGroups == groups.size) {
-                                    calculateBalances()
-                                }
-                            }
-                        }
-                    })
+                expenseListeners[expenseId] = listener
+                database.child("expenses").child(expenseId).addValueEventListener(listener)
             }
         }
     }
@@ -273,7 +312,7 @@ class HomeActivity : AppCompatActivity() {
         var amountOwed = 0.0  // Others owe me
         var amountOwe = 0.0   // I owe others
 
-        allExpenses.forEach { expense ->
+        allExpenses.values.forEach { expense ->
             val splitAmount = expense.amount / expense.splitAmong.size
 
             if (expense.paidBy == currentUserId) {
@@ -288,6 +327,9 @@ class HomeActivity : AppCompatActivity() {
                 amountOwe += splitAmount
             }
         }
+
+        // Update group totals in real-time
+        groupAdapter.updateGroups(groups.take(3), allExpenses)
 
         displayBalances(amountOwed, amountOwe)
     }

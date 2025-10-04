@@ -162,6 +162,8 @@ class SettleUpActivity : AppCompatActivity() {
     }
 
     private fun loadExpenses(group: Group) {
+        expenses.clear()
+
         if (group.expenseIds.isEmpty()) {
             calculateSettlements()
             return
@@ -170,22 +172,27 @@ class SettleUpActivity : AppCompatActivity() {
         var expensesLoaded = 0
         group.expenseIds.forEach { expenseId ->
             database.child("expenses").child(expenseId)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
+                .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val expense = snapshot.getValue(Expense::class.java)
+
+                        // Remove old expense
+                        expenses.removeAll { it.id == expenseId }
+
+                        // Add new expense if not settled
                         if (expense != null && !expense.isSettled) {
                             expenses.add(expense)
                         }
 
                         expensesLoaded++
-                        if (expensesLoaded == group.expenseIds.size) {
+                        if (expensesLoaded >= group.expenseIds.size) {
                             calculateSettlements()
                         }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
                         expensesLoaded++
-                        if (expensesLoaded == group.expenseIds.size) {
+                        if (expensesLoaded >= group.expenseIds.size) {
                             calculateSettlements()
                         }
                     }
