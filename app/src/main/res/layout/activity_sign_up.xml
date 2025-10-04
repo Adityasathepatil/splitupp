@@ -42,6 +42,7 @@
             android:textColor="#FFFFFF"
             android:textSize="32sp"
             android:textStyle="bold"
+            android:fontFamily="@font/kanitbold"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +56,7 @@
             android:text="Join us and start tracking expenses"
             android:textColor="#A0AEC0"
             android:textSize="16sp"
+            android:fontFamily="@font/kanitregular"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,6 +77,7 @@
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:fontFamily="@font/kanitsemibold"
             android:layout_marginTop="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,6 +103,7 @@
             android:text="OR"
             android:textColor="#718096"
             android:textSize="14sp"
+            android:fontFamily="@font/kanitmedium"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +148,8 @@
                 android:paddingEnd="20dp"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#718096"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/kanitregular" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Email Input -->
@@ -174,7 +179,8 @@
                 android:paddingEnd="20dp"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#718096"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/kanitregular" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password Input -->
@@ -206,7 +212,8 @@
                 android:paddingEnd="20dp"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#718096"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/kanitregular" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Confirm Password Input -->
@@ -238,7 +245,8 @@
                 android:paddingEnd="20dp"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#718096"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/kanitregular" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Terms and Conditions -->
@@ -251,6 +259,7 @@
             android:text="By signing up, you agree to our Terms of Service and Privacy Policy"
             android:textColor="#718096"
             android:textSize="12sp"
+            android:fontFamily="@font/kanitregular"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilConfirmPassword" />
@@ -266,6 +275,7 @@
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:fontFamily="@font/kanitbold"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -281,6 +291,7 @@
             android:text="@string/sign_in_link"
             android:textColor="#A0AEC0"
             android:textSize="14sp"
+            android:fontFamily="@font/kanitregular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

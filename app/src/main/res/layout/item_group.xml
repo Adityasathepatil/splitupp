@@ -29,14 +29,16 @@
                 android:text="Trip to Goa"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+            android:fontFamily="@font/kanitsemibold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Total"
                 android:textColor="#94A3B8"
-                android:textSize="12sp" />
+                android:textSize="12sp" 
+            android:fontFamily="@font/kanitregular" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,7 +65,8 @@
                 android:text="₹12450"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+            android:fontFamily="@font/kanitsemibold" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

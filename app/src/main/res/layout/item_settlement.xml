@@ -22,7 +22,8 @@
             android:layout_weight="1"
             android:text="Alex"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp" 
+            android:fontFamily="@font/kanitmedium" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,7 +31,8 @@
             android:layout_marginHorizontal="8dp"
             android:text="→"
             android:textColor="#94A3B8"
-            android:textSize="16sp" />
+            android:textSize="16sp" 
+            android:fontFamily="@font/kanitmedium" />
 
         <TextView
             android:id="@+id/tvToName"
@@ -39,7 +41,8 @@
             android:layout_weight="1"
             android:text="Sarah"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp" 
+            android:fontFamily="@font/kanitmedium" />
 
         <TextView
             android:id="@+id/tvAmount"
@@ -49,6 +52,7 @@
             android:text="₹500"
             android:textColor="#10B981"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" 
+            android:fontFamily="@font/kanitsemibold" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

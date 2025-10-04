@@ -28,7 +28,8 @@
                 android:text="Join Group"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+            android:fontFamily="@font/kanitbold" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/btnClose"
@@ -44,7 +45,8 @@
                     android:gravity="center"
                     android:text="✕"
                     android:textColor="@android:color/white"
-                    android:textSize="20sp" />
+                    android:textSize="20sp" 
+            android:fontFamily="@font/kanitsemibold" />
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 
@@ -63,7 +65,8 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="🔗"
-                android:textSize="40sp" />
+                android:textSize="40sp" 
+            android:fontFamily="@font/kanitregular" />
         </androidx.cardview.widget.CardView>
 
         <!-- Description -->
@@ -75,7 +78,8 @@
             android:text="Enter the 6-character code"
             android:textAlignment="center"
             android:textColor="#94A3B8"
-            android:textSize="14sp" />
+            android:textSize="14sp" 
+            android:fontFamily="@font/kanitmedium" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -84,7 +88,8 @@
             android:text="shared by your group admin"
             android:textAlignment="center"
             android:textColor="#94A3B8"
-            android:textSize="14sp" />
+            android:textSize="14sp" 
+            android:fontFamily="@font/kanitmedium" />
 
         <!-- Invite Code -->
         <TextView
@@ -94,7 +99,8 @@
             android:text="Group Code"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" 
+            android:fontFamily="@font/kanitsemibold" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilInviteCode"
@@ -126,7 +132,8 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="#64748B"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold" 
+            android:fontFamily="@font/kanitsemibold" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Info Card -->
@@ -148,7 +155,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="💡"
-                    android:textSize="20sp" />
+                    android:textSize="20sp" 
+            android:fontFamily="@font/kanitsemibold" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -157,7 +165,8 @@
                     android:layout_weight="1"
                     android:text="Ask the group creator to share the invite code with you"
                     android:textColor="#94A3B8"
-                    android:textSize="13sp" />
+                    android:textSize="13sp" 
+            android:fontFamily="@font/kanitregular" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -172,6 +181,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" 
+            android:fontFamily="@font/kanitsemibold" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

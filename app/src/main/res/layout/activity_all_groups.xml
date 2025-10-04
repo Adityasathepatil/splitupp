@@ -28,7 +28,8 @@
                 android:gravity="center"
                 android:text="←"
                 android:textColor="@android:color/white"
-                android:textSize="20sp" />
+                android:textSize="20sp" 
+            android:fontFamily="@font/kanitsemibold" />
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -39,7 +40,8 @@
             android:text="All Groups"
             android:textColor="@android:color/white"
             android:textSize="28sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" 
+            android:fontFamily="@font/kanitbold" />
     </LinearLayout>
 
     <!-- Groups Grid -->

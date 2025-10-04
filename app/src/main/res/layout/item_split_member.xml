@@ -22,7 +22,8 @@
             android:text="A"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" 
+            android:fontFamily="@font/kanitsemibold" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -33,7 +34,8 @@
         android:layout_weight="1"
         android:text="Alex"
         android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:textSize="14sp" 
+            android:fontFamily="@font/kanitmedium" />
 
     <CheckBox
         android:id="@+id/cbSelected"

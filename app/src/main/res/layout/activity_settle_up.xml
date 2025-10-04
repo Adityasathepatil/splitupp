@@ -28,7 +28,8 @@
                 android:gravity="center"
                 android:text="←"
                 android:textColor="@android:color/white"
-                android:textSize="20sp" />
+                android:textSize="20sp" 
+            android:fontFamily="@font/kanitsemibold" />
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -39,7 +40,8 @@
             android:text="Settle Up"
             android:textColor="@android:color/white"
             android:textSize="28sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" 
+            android:fontFamily="@font/kanitbold" />
     </LinearLayout>
 
     <!-- Content -->
@@ -60,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:text="Select Group"
                 android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp" 
+            android:fontFamily="@font/kanitmedium" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSelectGroup"
@@ -71,7 +74,8 @@
                 android:text="Select a group"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp" 
+            android:fontFamily="@font/kanitmedium" />
 
             <!-- Settlement Summary -->
             <TextView
@@ -83,7 +87,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                 android:fontFamily="@font/kanitsemibold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvSettlements"
@@ -105,7 +109,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                 android:fontFamily="@font/kanitsemibold" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

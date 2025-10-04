@@ -26,7 +26,8 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="👥"
-                android:textSize="28sp" />
+                android:textSize="28sp" 
+            android:fontFamily="@font/kanitbold" />
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -39,7 +40,8 @@
             android:text="Trip to Goa"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" 
+            android:fontFamily="@font/kanitsemibold" />
 
         <LinearLayout
             android:id="@+id/memberAvatarsContainer"
@@ -57,6 +59,7 @@
             android:layout_marginTop="12dp"
             android:text="₹12450"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp" 
+            android:fontFamily="@font/kanitmedium" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
