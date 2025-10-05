@@ -7,7 +7,9 @@ data class Group(
     val createdBy: String = "",
     val createdAt: Long = System.currentTimeMillis(),
     val memberIds: List<String> = emptyList(),
-    val expenseIds: List<String> = emptyList()
+    val expenseIds: List<String> = emptyList(),
+    val settlementIds: List<String> = emptyList(),
+    val memberBalances: Map<String, Double> = emptyMap()
 ) {
     fun toMap(): Map<String, Any?> {
         return mapOf(
@@ -17,7 +19,9 @@ data class Group(
             "createdBy" to createdBy,
             "createdAt" to createdAt,
             "memberIds" to memberIds,
-            "expenseIds" to expenseIds
+            "expenseIds" to expenseIds,
+            "settlementIds" to settlementIds,
+            "memberBalances" to memberBalances
         )
     }
 }
