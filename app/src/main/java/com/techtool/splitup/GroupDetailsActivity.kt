@@ -296,14 +296,41 @@ class GroupDetailsActivity : AppCompatActivity() {
 
     private fun updateBalances() {
         val currentUserId = auth.currentUser?.uid ?: return
-        val currentGroup = group ?: return
 
-        // Get current user's balance from group's memberBalances (real-time from database)
-        val myBalance = currentGroup.memberBalances[currentUserId] ?: 0.0
+        // Calculate real-time balance from expenses and settlements
+        var netBalance = 0.0
+
+        // Process expenses
+        expenses.values.forEach { expense ->
+            val splitAmount = expense.amount / expense.splitAmong.size
+
+            if (expense.paidBy == currentUserId) {
+                // I paid, so others owe me (positive balance)
+                expense.splitAmong.forEach { memberId ->
+                    if (memberId != currentUserId) {
+                        netBalance += splitAmount
+                    }
+                }
+            } else if (expense.splitAmong.contains(currentUserId)) {
+                // Someone else paid and I'm in the split (negative balance)
+                netBalance -= splitAmount
+            }
+        }
+
+        // Process settlements - they reduce balances
+        settlements.values.forEach { settlement ->
+            if (settlement.fromUserId == currentUserId) {
+                // I paid someone, reduces what I owe (increases my balance)
+                netBalance += settlement.amount
+            } else if (settlement.toUserId == currentUserId) {
+                // Someone paid me, reduces what they owe me (decreases my balance)
+                netBalance -= settlement.amount
+            }
+        }
 
         // Positive balance means others owe me, negative means I owe others
-        val amountOwed = if (myBalance > 0) myBalance else 0.0
-        val amountOwe = if (myBalance < 0) -myBalance else 0.0
+        val amountOwed = if (netBalance > 0) netBalance else 0.0
+        val amountOwe = if (netBalance < 0) -netBalance else 0.0
 
         binding.tvYouAreOwed.text = "₹%.2f".format(amountOwed)
         binding.tvYouOwe.text = "₹%.2f".format(amountOwe)

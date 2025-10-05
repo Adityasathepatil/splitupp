@@ -14,6 +14,7 @@ import com.techtool.splitup.models.Member
 import com.techtool.splitup.models.User
 import com.techtool.splitup.models.Expense
 import com.techtool.splitup.dialogs.GroupActionDialog
+import com.techtool.splitup.models.SettlementRecord
 
 class HomeActivity : AppCompatActivity() {
 
@@ -24,7 +25,9 @@ class HomeActivity : AppCompatActivity() {
 
     private val groups = mutableListOf<Pair<Group, List<Member>>>()
     private val allExpenses = mutableMapOf<String, Expense>()
+    private val allSettlements = mutableMapOf<String, SettlementRecord>()
     private val expenseListeners = mutableMapOf<String, ValueEventListener>()
+    private val settlementListeners = mutableMapOf<String, ValueEventListener>()
     private val groupListeners = mutableMapOf<String, ValueEventListener>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +55,9 @@ class HomeActivity : AppCompatActivity() {
         // Clean up listeners
         expenseListeners.forEach { (expenseId, listener) ->
             database.child("expenses").child(expenseId).removeEventListener(listener)
+        }
+        settlementListeners.forEach { (settlementId, listener) ->
+            database.child("settlements").child(settlementId).removeEventListener(listener)
         }
         groupListeners.forEach { (groupId, listener) ->
             database.child("groups").child(groupId).removeEventListener(listener)
@@ -185,6 +191,7 @@ class HomeActivity : AppCompatActivity() {
                             processedGroups++
                             if (processedGroups == groupIds.size) {
                                 loadAllExpenses()
+                                loadAllSettlements()
                             }
                         }
                     }
@@ -305,26 +312,94 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadAllSettlements() {
+        // Clean up old settlement listeners
+        val allSettlementIds = groups.flatMap { it.first.settlementIds }.toSet()
+        settlementListeners.keys.filter { it !in allSettlementIds }.forEach { settlementId ->
+            settlementListeners[settlementId]?.let { listener ->
+                database.child("settlements").child(settlementId).removeEventListener(listener)
+            }
+            settlementListeners.remove(settlementId)
+            allSettlements.remove(settlementId)
+        }
+
+        if (groups.isEmpty()) {
+            return
+        }
+
+        // Load settlements from all groups
+        val settlementIds = groups.flatMap { it.first.settlementIds }.toSet()
+
+        if (settlementIds.isEmpty()) {
+            allSettlements.clear()
+            calculateBalances()
+            return
+        }
+
+        settlementIds.forEach { settlementId ->
+            if (!settlementListeners.containsKey(settlementId)) {
+                val listener = object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val settlement = snapshot.getValue(SettlementRecord::class.java)
+
+                        if (settlement != null) {
+                            allSettlements[settlementId] = settlement
+                        } else {
+                            allSettlements.remove(settlementId)
+                        }
+
+                        // Recalculate balances on every settlement change
+                        calculateBalances()
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        // Handle error
+                    }
+                }
+
+                settlementListeners[settlementId] = listener
+                database.child("settlements").child(settlementId).addValueEventListener(listener)
+            }
+        }
+    }
+
     private fun calculateBalances() {
         val currentUserId = auth.currentUser?.uid ?: return
-        var amountOwed = 0.0  // Others owe me
-        var amountOwe = 0.0   // I owe others
 
+        // Calculate net balance considering both expenses and settlements
+        var netBalance = 0.0
+
+        // Process expenses
         allExpenses.values.forEach { expense ->
             val splitAmount = expense.amount / expense.splitAmong.size
 
             if (expense.paidBy == currentUserId) {
-                // I paid, so others owe me
+                // I paid, so others owe me (positive balance)
                 expense.splitAmong.forEach { memberId ->
                     if (memberId != currentUserId) {
-                        amountOwed += splitAmount
+                        netBalance += splitAmount
                     }
                 }
             } else if (expense.splitAmong.contains(currentUserId)) {
-                // Someone else paid and I'm in the split
-                amountOwe += splitAmount
+                // Someone else paid and I'm in the split (negative balance)
+                netBalance -= splitAmount
             }
         }
+
+        // Process settlements - they reduce balances
+        allSettlements.values.forEach { settlement ->
+            if (settlement.fromUserId == currentUserId) {
+                // I paid someone, reduces what I owe (increases my balance)
+                netBalance += settlement.amount
+            } else if (settlement.toUserId == currentUserId) {
+                // Someone paid me, reduces what they owe me (decreases my balance)
+                netBalance -= settlement.amount
+            }
+        }
+
+        // Separate into owed and owing
+        val amountOwed = if (netBalance > 0) netBalance else 0.0
+        val amountOwe = if (netBalance < 0) -netBalance else 0.0
 
         // Update group totals in real-time
         groupAdapter.updateGroups(groups.take(3), allExpenses)

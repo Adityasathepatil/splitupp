@@ -23,6 +23,9 @@ class SettleUpActivity : AppCompatActivity() {
     private val settlements = mutableListOf<Settlement>()
     private val groupMembers = mutableListOf<Member>()
     private val expenses = mutableListOf<Expense>()
+    private val existingSettlements = mutableListOf<SettlementRecord>()
+    private val expenseListeners = mutableMapOf<String, ValueEventListener>()
+    private val settlementListeners = mutableMapOf<String, ValueEventListener>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,17 @@ class SettleUpActivity : AppCompatActivity() {
 
         setupUI()
         loadUserGroups()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clean up listeners
+        expenseListeners.forEach { (expenseId, listener) ->
+            database.child("expenses").child(expenseId).removeEventListener(listener)
+        }
+        settlementListeners.forEach { (settlementId, listener) ->
+            database.child("settlements").child(settlementId).removeEventListener(listener)
+        }
     }
 
     private fun setupUI() {
@@ -129,6 +143,7 @@ class SettleUpActivity : AppCompatActivity() {
     private fun loadGroupData(group: Group) {
         groupMembers.clear()
         expenses.clear()
+        existingSettlements.clear()
 
         // Load members
         var membersLoaded = 0
@@ -144,6 +159,7 @@ class SettleUpActivity : AppCompatActivity() {
                         membersLoaded++
                         if (membersLoaded == group.memberIds.size) {
                             loadExpenses(group)
+                            loadSettlements(group)
                         }
                     }
 
@@ -151,6 +167,7 @@ class SettleUpActivity : AppCompatActivity() {
                         membersLoaded++
                         if (membersLoaded == group.memberIds.size) {
                             loadExpenses(group)
+                            loadSettlements(group)
                         }
                     }
                 })
@@ -162,6 +179,11 @@ class SettleUpActivity : AppCompatActivity() {
     }
 
     private fun loadExpenses(group: Group) {
+        // Clean up old listeners
+        expenseListeners.forEach { (expenseId, listener) ->
+            database.child("expenses").child(expenseId).removeEventListener(listener)
+        }
+        expenseListeners.clear()
         expenses.clear()
 
         if (group.expenseIds.isEmpty()) {
@@ -169,10 +191,9 @@ class SettleUpActivity : AppCompatActivity() {
             return
         }
 
-        var expensesLoaded = 0
         group.expenseIds.forEach { expenseId ->
-            database.child("expenses").child(expenseId)
-                .addValueEventListener(object : ValueEventListener {
+            if (!expenseListeners.containsKey(expenseId)) {
+                val listener = object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val expense = snapshot.getValue(Expense::class.java)
 
@@ -184,19 +205,60 @@ class SettleUpActivity : AppCompatActivity() {
                             expenses.add(expense)
                         }
 
-                        expensesLoaded++
-                        if (expensesLoaded >= group.expenseIds.size) {
-                            calculateSettlements()
-                        }
+                        // Recalculate on every change
+                        calculateSettlements()
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        expensesLoaded++
-                        if (expensesLoaded >= group.expenseIds.size) {
-                            calculateSettlements()
-                        }
+                        // Handle error
                     }
-                })
+                }
+
+                expenseListeners[expenseId] = listener
+                database.child("expenses").child(expenseId).addValueEventListener(listener)
+            }
+        }
+    }
+
+    private fun loadSettlements(group: Group) {
+        // Clean up old listeners
+        settlementListeners.forEach { (settlementId, listener) ->
+            database.child("settlements").child(settlementId).removeEventListener(listener)
+        }
+        settlementListeners.clear()
+        existingSettlements.clear()
+
+        if (group.settlementIds.isEmpty()) {
+            calculateSettlements()
+            return
+        }
+
+        group.settlementIds.forEach { settlementId ->
+            if (!settlementListeners.containsKey(settlementId)) {
+                val listener = object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val settlement = snapshot.getValue(SettlementRecord::class.java)
+
+                        // Remove old settlement
+                        existingSettlements.removeAll { it.id == settlementId }
+
+                        // Add new settlement
+                        if (settlement != null) {
+                            existingSettlements.add(settlement)
+                        }
+
+                        // Recalculate on every change
+                        calculateSettlements()
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        // Handle error
+                    }
+                }
+
+                settlementListeners[settlementId] = listener
+                database.child("settlements").child(settlementId).addValueEventListener(listener)
+            }
         }
     }
 
@@ -220,6 +282,14 @@ class SettleUpActivity : AppCompatActivity() {
             expense.splitAmong.forEach { memberId ->
                 balances[memberId] = (balances[memberId] ?: 0.0) - splitAmount
             }
+        }
+
+        // Subtract existing settlements from balances
+        existingSettlements.forEach { settlement ->
+            // Person who paid reduces their debt (increases balance)
+            balances[settlement.fromUserId] = (balances[settlement.fromUserId] ?: 0.0) + settlement.amount
+            // Person who received payment reduces what they're owed (decreases balance)
+            balances[settlement.toUserId] = (balances[settlement.toUserId] ?: 0.0) - settlement.amount
         }
 
         // Simplify settlements using greedy algorithm
@@ -270,6 +340,12 @@ class SettleUpActivity : AppCompatActivity() {
     }
 
     private fun settleUpGroup() {
+        val group = selectedGroup
+        if (group == null) {
+            Toast.makeText(this, "Please select a group first", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         if (expenses.isEmpty()) {
             Toast.makeText(this, "No expenses to settle", Toast.LENGTH_SHORT).show()
             return
@@ -278,14 +354,81 @@ class SettleUpActivity : AppCompatActivity() {
         binding.btnSettleUp.isEnabled = false
         binding.btnSettleUp.text = "Settling..."
 
-        // Mark all expenses as settled
+        val expenseIds = expenses.map { it.id }
+        val settlementRecords = mutableListOf<String>()
+
+        // Create settlement records in database
+        var settlementsCreated = 0
+        settlements.forEach { settlement ->
+            val settlementId = database.child("settlements").push().key ?: return@forEach
+
+            val settlementRecord = SettlementRecord(
+                id = settlementId,
+                groupId = group.id,
+                fromUserId = settlement.from.uid,
+                toUserId = settlement.to.uid,
+                amount = settlement.amount,
+                settledAt = System.currentTimeMillis(),
+                expenseIds = expenseIds
+            )
+
+            database.child("settlements").child(settlementId)
+                .setValue(settlementRecord.toMap())
+                .addOnSuccessListener {
+                    settlementRecords.add(settlementId)
+                    settlementsCreated++
+
+                    if (settlementsCreated == settlements.size) {
+                        // Update group with settlement IDs
+                        updateGroupSettlements(group, settlementRecords, expenseIds)
+                    }
+                }
+                .addOnFailureListener { e ->
+                    binding.btnSettleUp.isEnabled = true
+                    binding.btnSettleUp.text = "Mark as Settled"
+                    Toast.makeText(
+                        this,
+                        "Error creating settlement: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
+
+        // If there are no settlements to create, just mark expenses as settled
+        if (settlements.isEmpty()) {
+            markExpensesAsSettled(expenseIds)
+        }
+    }
+
+    private fun updateGroupSettlements(group: Group, settlementIds: List<String>, expenseIds: List<String>) {
+        val updates = mutableMapOf<String, Any>(
+            "settlementIds" to (group.settlementIds + settlementIds)
+        )
+
+        database.child("groups").child(group.id)
+            .updateChildren(updates)
+            .addOnSuccessListener {
+                markExpensesAsSettled(expenseIds)
+            }
+            .addOnFailureListener { e ->
+                binding.btnSettleUp.isEnabled = true
+                binding.btnSettleUp.text = "Mark as Settled"
+                Toast.makeText(
+                    this,
+                    "Error updating group: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+    private fun markExpensesAsSettled(expenseIds: List<String>) {
         var settledCount = 0
-        expenses.forEach { expense ->
-            database.child("expenses").child(expense.id).child("isSettled")
+        expenseIds.forEach { expenseId ->
+            database.child("expenses").child(expenseId).child("isSettled")
                 .setValue(true)
                 .addOnSuccessListener {
                     settledCount++
-                    if (settledCount == expenses.size) {
+                    if (settledCount == expenseIds.size) {
                         Toast.makeText(
                             this,
                             "Successfully settled all expenses!",
