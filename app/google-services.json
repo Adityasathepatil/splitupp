@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "308247108481",
+    "firebase_url": "https://splitup-a6dee-default-rtdb.firebaseio.com",
     "project_id": "splitup-a6dee",
     "storage_bucket": "splitup-a6dee.firebasestorage.app"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.techtool.splitup"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "308247108481-alh8nd72r2bcsj7k59jsh73fj1h8nvdd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtool.splitup",
+            "certificate_hash": "256f37567bdf99d13afd53908ac73e6d34b83289"
+          }
+        },
+        {
+          "client_id": "308247108481-tualjs24pld7cfr449kqcdjdlasfcgo6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD_1lSqity6G6J4TiQICdX9JEOaqDjAFvM"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308247108481-tualjs24pld7cfr449kqcdjdlasfcgo6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
