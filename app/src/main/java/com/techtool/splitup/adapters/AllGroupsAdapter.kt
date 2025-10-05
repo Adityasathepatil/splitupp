@@ -7,11 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.techtool.splitup.databinding.ItemGroupGridBinding
+import com.techtool.splitup.models.Expense
 import com.techtool.splitup.models.Group
 import com.techtool.splitup.models.Member
 
 class AllGroupsAdapter(
     private var groups: List<Pair<Group, List<Member>>>,
+    private var expenses: Map<String, Expense> = emptyMap(),
     private val onGroupClick: (Group) -> Unit
 ) : RecyclerView.Adapter<AllGroupsAdapter.GroupViewHolder>() {
 
@@ -27,7 +29,14 @@ class AllGroupsAdapter(
             val (group, members) = groupWithMembers
 
             binding.tvGroupName.text = group.name
-            binding.tvGroupTotal.text = "₹0"
+
+            // Calculate total from expenses
+            val groupTotal = group.expenseIds
+                .mapNotNull { expenseId -> expenses[expenseId] }
+                .filter { !it.isSettled }
+                .sumOf { it.amount }
+
+            binding.tvGroupTotal.text = "₹%.2f".format(groupTotal)
 
             // Clear previous member avatars
             binding.memberAvatarsContainer.removeAllViews()
@@ -125,8 +134,9 @@ class AllGroupsAdapter(
 
     override fun getItemCount() = groups.size
 
-    fun updateGroups(newGroups: List<Pair<Group, List<Member>>>) {
+    fun updateGroups(newGroups: List<Pair<Group, List<Member>>>, newExpenses: Map<String, Expense> = expenses) {
         groups = newGroups
+        expenses = newExpenses
         notifyDataSetChanged()
     }
 }
