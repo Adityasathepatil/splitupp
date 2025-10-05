@@ -85,9 +85,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding.tvUserInitial.setOnClickListener {
-            GroupActionDialog(this) {
-                loadUserGroups()
-            }.show()
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
     }
 

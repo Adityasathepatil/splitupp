@@ -7,4 +7,18 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Profile Screen Colors -->
+    <color name="profile_background">#1A1C23</color>
+    <color name="profile_card_bg">#2C3142</color>
+    <color name="profile_item_bg">#262B3A</color>
+    <color name="profile_text_primary">#FFFFFF</color>
+    <color name="profile_text_secondary">#9CA3AF</color>
+    <color name="profile_avatar_bg">#6366F1</color>
+    <color name="profile_icon_email">#3B82F6</color>
+    <color name="profile_icon_phone">#10B981</color>
+    <color name="profile_icon_groups">#8B5CF6</color>
+    <color name="profile_icon_settings">#6B7280</color>
+    <color name="profile_logout_bg">#7F1D1D</color>
+    <color name="profile_logout_text">#EF4444</color>
 </resources>

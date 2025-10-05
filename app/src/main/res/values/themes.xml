@@ -16,4 +16,21 @@
         <item name="colorSurface">#1E293B</item>
         <item name="colorOnSurface">@android:color/white</item>
     </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/profile_avatar_bg</item>
+        <item name="colorAccent">@color/profile_avatar_bg</item>
+        <item name="android:background">@color/profile_card_bg</item>
+        <item name="android:textColorPrimary">@color/profile_text_primary</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/profile_text_secondary</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/profile_logout_text</item>
+    </style>
 </resources>
