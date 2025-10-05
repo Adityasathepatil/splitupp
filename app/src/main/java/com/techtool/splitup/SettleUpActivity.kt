@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -12,7 +11,7 @@ import com.techtool.splitup.adapters.SettlementAdapter
 import com.techtool.splitup.databinding.ActivitySettleUpBinding
 import com.techtool.splitup.models.*
 
-class SettleUpActivity : AppCompatActivity() {
+class SettleUpActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySettleUpBinding
     private lateinit var auth: FirebaseAuth

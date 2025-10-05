@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -20,7 +19,7 @@ import com.techtool.splitup.models.SettlementRecord
 import com.techtool.splitup.models.TransactionItem
 import com.techtool.splitup.models.User
 
-class GroupDetailsActivity : AppCompatActivity() {
+class GroupDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityGroupDetailsBinding
     private lateinit var auth: FirebaseAuth

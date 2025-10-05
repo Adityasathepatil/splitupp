@@ -3,7 +3,6 @@ package com.techtool.splitup
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -14,7 +13,7 @@ import com.techtool.splitup.models.Group
 import com.techtool.splitup.models.Member
 import com.techtool.splitup.models.User
 
-class AllGroupsActivity : AppCompatActivity() {
+class AllGroupsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAllGroupsBinding
     private lateinit var auth: FirebaseAuth

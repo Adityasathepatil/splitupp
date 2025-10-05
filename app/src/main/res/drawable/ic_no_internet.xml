@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- WiFi Arc 1 (Outer) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/profile_text_secondary"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M 1,9 Q 12,0 23,9" />
+
+    <!-- WiFi Arc 2 (Middle) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/profile_text_secondary"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M 5,13 Q 12,6 19,13" />
+
+    <!-- WiFi Arc 3 (Inner) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/profile_text_secondary"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M 9,17 Q 12,14 15,17" />
+
+    <!-- Center Dot (using path instead of circle) -->
+    <path
+        android:fillColor="@color/profile_text_secondary"
+        android:pathData="M 12,18.5 C 13.1,18.5 14,19.4 14,20.5 C 14,21.6 13.1,22.5 12,22.5 C 10.9,22.5 10,21.6 10,20.5 C 10,19.4 10.9,18.5 12,18.5 Z" />
+
+    <!-- Diagonal Strike-through Line -->
+    <path
+        android:strokeColor="@color/profile_logout_text"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M 3,3 L 21,21" />
+
+</vector>
