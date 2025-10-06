@@ -169,6 +169,67 @@
             android:textSize="16sp" 
             android:fontFamily="@font/kanitmedium" />
 
+        <!-- Split Type -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Split Type"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:fontFamily="@font/kanitmedium" />
+
+        <RadioGroup
+            android:id="@+id/rgSplitType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbEqual"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Equal"
+                android:textColor="@android:color/white"
+                android:buttonTint="#6366F1"
+                android:fontFamily="@font/kanitmedium" />
+
+            <RadioButton
+                android:id="@+id/rbUnequal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Unequal"
+                android:textColor="@android:color/white"
+                android:buttonTint="#6366F1"
+                android:fontFamily="@font/kanitmedium" />
+
+            <RadioButton
+                android:id="@+id/rbPercentage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Percent"
+                android:textColor="@android:color/white"
+                android:buttonTint="#6366F1"
+                android:fontFamily="@font/kanitmedium" />
+        </RadioGroup>
+
+        <!-- Validation message -->
+        <TextView
+            android:id="@+id/tvSplitValidation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text=""
+            android:textColor="#EF4444"
+            android:textSize="12sp"
+            android:visibility="gone"
+            android:fontFamily="@font/kanitregular" />
+
         <!-- Split Among -->
         <TextView
             android:layout_width="wrap_content"
@@ -176,7 +237,7 @@
             android:layout_marginTop="20dp"
             android:text="Split Among"
             android:textColor="@android:color/white"
-            android:textSize="16sp" 
+            android:textSize="16sp"
             android:fontFamily="@font/kanitmedium" />
 
         <androidx.cardview.widget.CardView

@@ -299,19 +299,19 @@ class GroupDetailsActivity : BaseActivity() {
         // Calculate real-time balance from expenses and settlements
         var netBalance = 0.0
 
-        // Process expenses
+        // Process expenses with proper split calculation
         expenses.values.forEach { expense ->
-            val splitAmount = expense.amount / expense.splitAmong.size
-
             if (expense.paidBy == currentUserId) {
                 // I paid, so others owe me (positive balance)
                 expense.splitAmong.forEach { memberId ->
                     if (memberId != currentUserId) {
+                        val splitAmount = expense.getSplitAmountForUser(memberId)
                         netBalance += splitAmount
                     }
                 }
             } else if (expense.splitAmong.contains(currentUserId)) {
                 // Someone else paid and I'm in the split (negative balance)
+                val splitAmount = expense.getSplitAmountForUser(currentUserId)
                 netBalance -= splitAmount
             }
         }

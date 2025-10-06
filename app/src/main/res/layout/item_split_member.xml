@@ -22,7 +22,7 @@
             android:text="A"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            android:textStyle="bold" 
+            android:textStyle="bold"
             android:fontFamily="@font/kanitsemibold" />
     </androidx.cardview.widget.CardView>
 
@@ -34,8 +34,36 @@
         android:layout_weight="1"
         android:text="Alex"
         android:textColor="@android:color/white"
-        android:textSize="14sp" 
-            android:fontFamily="@font/kanitmedium" />
+        android:textSize="14sp"
+        android:fontFamily="@font/kanitmedium" />
+
+    <!-- Amount input for unequal splits -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilAmount"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        android:textColorHint="#A0AEC0"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etAmount"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/edit_text_bg"
+            android:hint="₹0"
+            android:inputType="numberDecimal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#718096"
+            android:textSize="14sp"
+            android:fontFamily="@font/kanitregular" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
         android:id="@+id/cbSelected"

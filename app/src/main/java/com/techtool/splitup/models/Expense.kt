@@ -7,6 +7,8 @@ data class Expense(
     val amount: Double = 0.0,
     val paidBy: String = "", // User ID
     val splitAmong: List<String> = emptyList(), // List of User IDs
+    val splitType: String = "EQUAL", // EQUAL, UNEQUAL, PERCENTAGE, EXACT
+    val splitDetails: Map<String, Double> = emptyMap(), // userId -> amount they owe
     val createdAt: Long = System.currentTimeMillis(),
     val isSettled: Boolean = false
 ) {
@@ -18,8 +20,27 @@ data class Expense(
             "amount" to amount,
             "paidBy" to paidBy,
             "splitAmong" to splitAmong,
+            "splitType" to splitType,
+            "splitDetails" to splitDetails,
             "createdAt" to createdAt,
             "isSettled" to isSettled
         )
+    }
+
+    // Helper function to get split amount for a user
+    fun getSplitAmountForUser(userId: String): Double {
+        return when (splitType) {
+            "EQUAL" -> {
+                if (splitAmong.contains(userId)) {
+                    amount / splitAmong.size
+                } else {
+                    0.0
+                }
+            }
+            else -> {
+                // For UNEQUAL, PERCENTAGE, EXACT - use splitDetails
+                splitDetails[userId] ?: 0.0
+            }
+        }
     }
 }

@@ -270,15 +270,14 @@ class SettleUpActivity : BaseActivity() {
             balances[member.uid] = 0.0
         }
 
-        // Process expenses
+        // Process expenses with proper split calculation
         expenses.forEach { expense ->
-            val splitAmount = expense.amount / expense.splitAmong.size
-
-            // The payer should receive money
+            // The payer should receive the full amount back
             balances[expense.paidBy] = (balances[expense.paidBy] ?: 0.0) + expense.amount
 
-            // Each person in split should pay
+            // Each person in split should pay their share
             expense.splitAmong.forEach { memberId ->
+                val splitAmount = expense.getSplitAmountForUser(memberId)
                 balances[memberId] = (balances[memberId] ?: 0.0) - splitAmount
             }
         }

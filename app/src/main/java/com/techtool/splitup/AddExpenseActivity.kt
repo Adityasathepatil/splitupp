@@ -23,7 +23,10 @@ class AddExpenseActivity : BaseActivity() {
     private var selectedPaidBy: Member? = null
     private val groupMembers = mutableListOf<Member>()
     private val selectedSplitMembers = mutableSetOf<String>()
+    private val splitAmounts = mutableMapOf<String, Double>()
     private val userGroups = mutableListOf<Group>()
+    private var splitMode = "EQUAL"
+    private lateinit var splitMemberAdapter: SplitMemberAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +69,27 @@ class AddExpenseActivity : BaseActivity() {
             showPaidBySelectionDialog()
         }
 
+        // Split type radio buttons
+        binding.rgSplitType.setOnCheckedChangeListener { _, checkedId ->
+            splitMode = when (checkedId) {
+                binding.rbEqual.id -> "EQUAL"
+                binding.rbUnequal.id -> "UNEQUAL"
+                binding.rbPercentage.id -> "PERCENTAGE"
+                else -> "EQUAL"
+            }
+            updateSplitMode()
+        }
+
         binding.btnAddExpense.setOnClickListener {
             addExpense()
+        }
+    }
+
+    private fun updateSplitMode() {
+        if (::splitMemberAdapter.isInitialized) {
+            splitAmounts.clear()
+            splitMemberAdapter.updateSplitMode(splitMode)
+            binding.tvSplitValidation.visibility = android.view.View.GONE
         }
     }
 
@@ -178,10 +200,41 @@ class AddExpenseActivity : BaseActivity() {
     }
 
     private fun setupSplitMembersRecyclerView() {
-        val adapter = SplitMemberAdapter(groupMembers, selectedSplitMembers)
+        splitMemberAdapter = SplitMemberAdapter(
+            groupMembers,
+            selectedSplitMembers,
+            splitAmounts,
+            splitMode
+        ) { totalAmount ->
+            // Callback for amount changes - validate split
+            validateSplit(totalAmount)
+        }
         binding.rvSplitAmong.apply {
             layoutManager = LinearLayoutManager(this@AddExpenseActivity)
-            this.adapter = adapter
+            adapter = splitMemberAdapter
+        }
+    }
+
+    private fun validateSplit(totalSplitAmount: Double) {
+        val expenseAmount = binding.etAmount.text.toString().toDoubleOrNull() ?: 0.0
+
+        when (splitMode) {
+            "PERCENTAGE" -> {
+                if (totalSplitAmount != 100.0 && totalSplitAmount > 0) {
+                    binding.tvSplitValidation.text = "Total: ${totalSplitAmount}% (should be 100%)"
+                    binding.tvSplitValidation.visibility = android.view.View.VISIBLE
+                } else {
+                    binding.tvSplitValidation.visibility = android.view.View.GONE
+                }
+            }
+            "UNEQUAL" -> {
+                if (totalSplitAmount != expenseAmount && totalSplitAmount > 0) {
+                    binding.tvSplitValidation.text = "Total: ₹${totalSplitAmount} (should be ₹${expenseAmount})"
+                    binding.tvSplitValidation.visibility = android.view.View.VISIBLE
+                } else {
+                    binding.tvSplitValidation.visibility = android.view.View.GONE
+                }
+            }
         }
     }
 
@@ -232,6 +285,48 @@ class AddExpenseActivity : BaseActivity() {
             return
         }
 
+        // Validate split amounts for non-equal splits
+        val calculatedSplitDetails = mutableMapOf<String, Double>()
+        when (splitMode) {
+            "EQUAL" -> {
+                // Equal split - calculate equal amounts
+                val splitAmount = amount / selectedSplitMembers.size
+                selectedSplitMembers.forEach { memberId ->
+                    calculatedSplitDetails[memberId] = splitAmount
+                }
+            }
+            "PERCENTAGE" -> {
+                // Percentage split - validate total is 100%
+                val totalPercentage = splitAmounts.values.sum()
+                if (totalPercentage != 100.0) {
+                    Toast.makeText(this, "Total percentage must equal 100%", Toast.LENGTH_SHORT).show()
+                    return
+                }
+                // Convert percentages to amounts
+                selectedSplitMembers.forEach { memberId ->
+                    val percentage = splitAmounts[memberId] ?: 0.0
+                    calculatedSplitDetails[memberId] = (amount * percentage / 100.0)
+                }
+            }
+            "UNEQUAL" -> {
+                // Unequal split - validate total equals expense amount
+                val totalSplit = splitAmounts.values.sum()
+                if (kotlin.math.abs(totalSplit - amount) > 0.01) {
+                    Toast.makeText(this, "Total split amount must equal expense amount", Toast.LENGTH_SHORT).show()
+                    return
+                }
+                selectedSplitMembers.forEach { memberId ->
+                    calculatedSplitDetails[memberId] = splitAmounts[memberId] ?: 0.0
+                }
+            }
+        }
+
+        // Verify all selected members have split amounts
+        if (calculatedSplitDetails.size != selectedSplitMembers.size) {
+            Toast.makeText(this, "Please enter amounts for all selected members", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         binding.btnAddExpense.isEnabled = false
         binding.btnAddExpense.text = "Adding..."
 
@@ -242,7 +337,9 @@ class AddExpenseActivity : BaseActivity() {
             description = description,
             amount = amount,
             paidBy = selectedPaidBy!!.uid,
-            splitAmong = selectedSplitMembers.toList()
+            splitAmong = selectedSplitMembers.toList(),
+            splitType = splitMode,
+            splitDetails = calculatedSplitDetails
         )
 
         database.child("expenses").child(expenseId).setValue(expense.toMap())
