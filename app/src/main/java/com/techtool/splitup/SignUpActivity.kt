@@ -25,10 +25,24 @@ class SignUpActivity : BaseActivity() {
     ) { result ->
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
-            val account = task.getResult(ApiException::class.java)!!
-            firebaseAuthWithGoogle(account.idToken!!)
+            val account = task.getResult(ApiException::class.java)
+            if (account != null) {
+                val idToken = account.idToken
+                if (idToken != null) {
+                    firebaseAuthWithGoogle(idToken)
+                } else {
+                    Toast.makeText(this, "Failed to get authentication token. Please try again.", Toast.LENGTH_LONG).show()
+                    android.util.Log.e("GoogleSignIn", "ID Token is null")
+                }
+            } else {
+                Toast.makeText(this, "Failed to get account information. Please try again.", Toast.LENGTH_LONG).show()
+                android.util.Log.e("GoogleSignIn", "Account is null")
+            }
         } catch (e: ApiException) {
-            Toast.makeText(this, "Google sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            handleGoogleSignInError(e)
+        } catch (e: Exception) {
+            android.util.Log.e("GoogleSignIn", "Unexpected error: ${e.message}", e)
+            Toast.makeText(this, "An unexpected error occurred: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -206,8 +220,11 @@ class SignUpActivity : BaseActivity() {
     }
 
     private fun signInWithGoogle() {
-        val signInIntent = googleSignInClient.signInIntent
-        googleSignInLauncher.launch(signInIntent)
+        // Sign out first to ensure a fresh sign-in process and account selection
+        googleSignInClient.signOut().addOnCompleteListener {
+            val signInIntent = googleSignInClient.signInIntent
+            googleSignInLauncher.launch(signInIntent)
+        }
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
@@ -221,6 +238,38 @@ class SignUpActivity : BaseActivity() {
                     Toast.makeText(this, "Authentication failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun handleGoogleSignInError(e: ApiException) {
+        val errorMessage = when (e.statusCode) {
+            10 -> {
+                // DEVELOPER_ERROR - Most common cause: SHA-1 certificate not registered in Firebase Console
+                android.util.Log.e("GoogleSignIn", "Error 10: DEVELOPER_ERROR - Status: ${e.statusCode}, Message: ${e.message}")
+                "Configuration Error: Please ensure your SHA-1 certificate is added to Firebase Console.\n\nTo fix:\n1. Run: ./gradlew signingReport\n2. Copy SHA-1 fingerprint\n3. Add to Firebase Console"
+            }
+            7 -> {
+                // NETWORK_ERROR
+                "Network error. Please check your internet connection"
+            }
+            12501 -> {
+                // SIGN_IN_CANCELLED
+                "Sign in cancelled"
+            }
+            12502 -> {
+                // SIGN_IN_CURRENTLY_IN_PROGRESS
+                "Sign in already in progress"
+            }
+            16 -> {
+                // INTERNAL_ERROR
+                "An internal error occurred. Please try again"
+            }
+            else -> {
+                android.util.Log.e("GoogleSignIn", "Error: ${e.statusCode} - ${e.message}")
+                "Google sign in failed (Error ${e.statusCode}): ${e.message}"
+            }
+        }
+
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
     }
 
     private fun navigateToMain() {
