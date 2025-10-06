@@ -40,7 +40,7 @@
     <!-- Amount input for unequal splits -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilAmount"
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -53,16 +53,19 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etAmount"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:background="@drawable/edit_text_bg"
             android:hint="₹0"
             android:inputType="numberDecimal"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
+            android:gravity="center"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:textColor="#FFFFFF"
-            android:textColorHint="#718096"
-            android:textSize="14sp"
-            android:fontFamily="@font/kanitregular" />
+            android:textColorHint="#94A3B8"
+            android:textSize="15sp"
+            android:fontFamily="@font/kanitmedium" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
