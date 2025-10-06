@@ -15,6 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Splitup">
 
+        <!-- AdMob App ID - Replace with your actual AdMob App ID -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5829896408548217~8172128006"/>
+
         <activity
             android:name=".SplashActivity"
             android:exported="true"

@@ -217,6 +217,15 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- AdMob Banner Ad -->
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adViewHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:adSize="BANNER"
+                app:adUnitId="ca-app-pub-5829896408548217/3366523889"/>
+
             <!-- Quick Actions -->
             <TextView
                 android:layout_width="wrap_content"

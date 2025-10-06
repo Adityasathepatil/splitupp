@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.techtool.splitup.adapters.SplitMemberAdapter
@@ -32,6 +34,11 @@ class AddExpenseActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddExpenseBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Initialize AdMob
+        MobileAds.initialize(this) {}
+        val adRequest = AdRequest.Builder().build()
+        binding.adViewExpense.loadAd(adRequest)
 
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
