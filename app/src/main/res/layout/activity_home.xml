@@ -9,22 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="24dp">
+        android:paddingBottom="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="22dp"
-            android:paddingTop="24dp">
+            android:paddingHorizontal="20dp"
+            android:paddingTop="20dp">
 
             <!-- Header -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingVertical="8dp">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -38,28 +37,26 @@
                         android:layout_height="wrap_content"
                         android:text="Hi Alex 👋"
                         android:textColor="@android:color/white"
-                        android:textSize="34sp"
-                        android:letterSpacing="0.01"
+                        android:textSize="32sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/kanitbold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="Here's your balance overview"
+                        android:layout_marginTop="4dp"
+                        android:text="Here's your balance"
                         android:textColor="#94A3B8"
                         android:textSize="15sp"
-                        android:letterSpacing="0.02"
                         android:fontFamily="@font/kanitmedium" />
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     app:cardBackgroundColor="#6366F1"
-                    app:cardCornerRadius="30dp"
-                    app:cardElevation="8dp">
+                    app:cardCornerRadius="28dp"
+                    app:cardElevation="0dp">
 
                     <TextView
                         android:id="@+id/tvUserInitial"
@@ -68,84 +65,55 @@
                         android:gravity="center"
                         android:text="A"
                         android:textColor="@android:color/white"
-                        android:textSize="26sp"
+                        android:textSize="24sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/kanitbold" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Balance Card with Gradient Effect -->
+            <!-- Balance Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 app:cardBackgroundColor="#1E293B"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="12dp">
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="28dp">
+                    android:padding="24dp">
 
-                    <!-- Net Balance - Featured at Top -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <!-- Net Balance -->
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/gradient_card_background"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="28dp">
+                        android:layout_gravity="center_horizontal"
+                        android:text="Net Balance"
+                        android:textColor="#94A3B8"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/kanitmedium" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="NET BALANCE"
-                            android:textColor="#CBD5E1"
-                            android:textSize="14sp"
-                            android:letterSpacing="0.15"
-                            android:fontFamily="@font/kanitsemibold" />
-
-                        <TextView
-                            android:id="@+id/tvNetBalance"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="₹00.00"
-                            android:textColor="@android:color/white"
-                            android:textSize="48sp"
-                            android:letterSpacing="0.02"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/kanitbold" />
-                    </LinearLayout>
-
-                    <!-- Divider with Dots -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tvNetBalance"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="24dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:text="₹00.00"
+                        android:textColor="@android:color/white"
+                        android:textSize="40sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/kanitbold" />
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="2dp"
-                            android:layout_weight="1"
-                            android:background="#2D3748" />
-
-                        <View
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginHorizontal="16dp"
-                            android:background="@drawable/dot_indicator" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="2dp"
-                            android:layout_weight="1"
-                            android:background="#2D3748" />
-                    </LinearLayout>
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="20dp"
+                        android:background="#334155" />
 
                     <!-- Owed and Owe Section -->
                     <LinearLayout
@@ -153,72 +121,65 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!-- You Are Owed -->
+                        <!-- You Get Back -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/balance_card_left"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="20dp">
+                            android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="↑ YOU GET BACK"
+                                android:text="↑ You get back"
                                 android:textColor="#94A3B8"
-                                android:textSize="11sp"
-                                android:letterSpacing="0.08"
-                                android:fontFamily="@font/kanitsemibold" />
+                                android:textSize="12sp"
+                                android:fontFamily="@font/kanitmedium" />
 
                             <TextView
                                 android:id="@+id/tvAmountOwed"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="6dp"
                                 android:text="₹00.00"
                                 android:textColor="#10B981"
-                                android:textSize="24sp"
-                                android:letterSpacing="0.01"
+                                android:textSize="22sp"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/kanitbold" />
                         </LinearLayout>
 
+                        <!-- Divider -->
                         <View
-                            android:layout_width="2dp"
+                            android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:layout_marginVertical="12dp"
-                            android:background="#2D3748" />
+                            android:layout_marginHorizontal="16dp"
+                            android:background="#334155" />
 
                         <!-- You Owe -->
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/balance_card_right"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="20dp">
+                            android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="↓ YOU OWE"
+                                android:text="↓ You owe"
                                 android:textColor="#94A3B8"
-                                android:textSize="11sp"
-                                android:letterSpacing="0.08"
-                                android:fontFamily="@font/kanitsemibold" />
+                                android:textSize="12sp"
+                                android:fontFamily="@font/kanitmedium" />
 
                             <TextView
                                 android:id="@+id/tvAmountOwe"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="6dp"
                                 android:text="₹00.00"
                                 android:textColor="#EF4444"
-                                android:textSize="24sp"
-                                android:letterSpacing="0.01"
+                                android:textSize="22sp"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/kanitbold" />
                         </LinearLayout>
@@ -227,81 +188,54 @@
             </androidx.cardview.widget.CardView>
 
             <!-- AdMob Banner Ad -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                app:cardBackgroundColor="#1E293B"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="4dp">
-
-                <com.google.android.gms.ads.AdView
-                    android:id="@+id/adViewHome"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:adSize="BANNER"
-                    app:adUnitId="ca-app-pub-5829896408548217/3366523889"/>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Quick Actions -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Quick Actions"
-                    android:textColor="@android:color/white"
-                    android:textSize="24sp"
-                    android:letterSpacing="0.01"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/kanitsemibold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Manage your expenses"
-                    android:textColor="#64748B"
-                    android:textSize="14sp"
-                    android:letterSpacing="0.02"
-                    android:fontFamily="@font/kanitmedium" />
-            </LinearLayout>
-
-            <LinearLayout
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adViewHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                app:adSize="BANNER"
+                app:adUnitId="ca-app-pub-5829896408548217/3366523889"/>
+
+            <!-- Quick Actions -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Quick Actions"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/kanitsemibold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardAddExpense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     app:cardBackgroundColor="#1E293B"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="8dp">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingHorizontal="18dp"
-                        android:paddingVertical="28dp">
+                        android:padding="20dp">
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="68dp"
-                            android:layout_height="68dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             app:cardBackgroundColor="#3B82F6"
-                            app:cardCornerRadius="18dp"
-                            app:cardElevation="4dp">
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="0dp">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -309,7 +243,7 @@
                                 android:gravity="center"
                                 android:text="₹"
                                 android:textColor="@android:color/white"
-                                android:textSize="34sp"
+                                android:textSize="32sp"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/kanitbold" />
                         </androidx.cardview.widget.CardView>
@@ -317,17 +251,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="12dp"
                             android:text="Add"
                             android:textColor="@android:color/white"
                             android:textSize="16sp"
-                            android:letterSpacing="0.02"
                             android:fontFamily="@font/kanitsemibold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="2dp"
                             android:text="Expense"
                             android:textColor="#94A3B8"
                             android:textSize="13sp"
@@ -339,26 +272,25 @@
                     android:id="@+id/cardCreateGroup"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="6dp"
+                    android:layout_marginHorizontal="4dp"
                     android:layout_weight="1"
                     app:cardBackgroundColor="#1E293B"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="8dp">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingHorizontal="18dp"
-                        android:paddingVertical="28dp">
+                        android:padding="20dp">
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="68dp"
-                            android:layout_height="68dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             app:cardBackgroundColor="#8B5CF6"
-                            app:cardCornerRadius="18dp"
-                            app:cardElevation="4dp">
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="0dp">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -366,7 +298,7 @@
                                 android:gravity="center"
                                 android:text="+"
                                 android:textColor="@android:color/white"
-                                android:textSize="38sp"
+                                android:textSize="36sp"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/kanitbold" />
                         </androidx.cardview.widget.CardView>
@@ -374,17 +306,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="12dp"
                             android:text="Create"
                             android:textColor="@android:color/white"
                             android:textSize="16sp"
-                            android:letterSpacing="0.02"
                             android:fontFamily="@font/kanitsemibold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="2dp"
                             android:text="Group"
                             android:textColor="#94A3B8"
                             android:textSize="13sp"
@@ -396,26 +327,25 @@
                     android:id="@+id/cardSettleUp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     app:cardBackgroundColor="#1E293B"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="8dp">
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:paddingHorizontal="18dp"
-                        android:paddingVertical="28dp">
+                        android:padding="20dp">
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="68dp"
-                            android:layout_height="68dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             app:cardBackgroundColor="#10B981"
-                            app:cardCornerRadius="18dp"
-                            app:cardElevation="4dp">
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="0dp">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -423,7 +353,7 @@
                                 android:gravity="center"
                                 android:text="✓"
                                 android:textColor="@android:color/white"
-                                android:textSize="34sp"
+                                android:textSize="32sp"
                                 android:textStyle="bold"
                                 android:fontFamily="@font/kanitbold" />
                         </androidx.cardview.widget.CardView>
@@ -431,17 +361,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="12dp"
                             android:text="Settle"
                             android:textColor="@android:color/white"
                             android:textSize="16sp"
-                            android:letterSpacing="0.02"
                             android:fontFamily="@font/kanitsemibold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="2dp"
                             android:text="Up"
                             android:textColor="#94A3B8"
                             android:textSize="13sp"
@@ -454,7 +383,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="32dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -469,19 +398,17 @@
                         android:layout_height="wrap_content"
                         android:text="Your Groups"
                         android:textColor="@android:color/white"
-                        android:textSize="24sp"
-                        android:letterSpacing="0.01"
+                        android:textSize="22sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/kanitsemibold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="4dp"
                         android:text="Recent activity"
                         android:textColor="#64748B"
-                        android:textSize="14sp"
-                        android:letterSpacing="0.02"
+                        android:textSize="13sp"
                         android:fontFamily="@font/kanitmedium" />
                 </LinearLayout>
 
@@ -489,19 +416,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardBackgroundColor="#334155"
-                    app:cardCornerRadius="24dp"
-                    app:cardElevation="4dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp">
 
                     <TextView
                         android:id="@+id/tvViewAll"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="12dp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="10dp"
                         android:text="View All"
                         android:textColor="#E2E8F0"
-                        android:textSize="14sp"
-                        android:letterSpacing="0.02"
+                        android:textSize="13sp"
                         android:fontFamily="@font/kanitsemibold" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
@@ -510,7 +436,7 @@
                 android:id="@+id/rvGroups"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false" />
         </LinearLayout>
