@@ -10,22 +10,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="22dp">
 
         <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingVertical="8dp">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/btnBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 app:cardBackgroundColor="#1E293B"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -33,52 +34,79 @@
                     android:gravity="center"
                     android:text="←"
                     android:textColor="@android:color/white"
-                    android:textSize="20sp" 
-            android:fontFamily="@font/kanitsemibold" />
+                    android:textSize="24sp"
+                    android:fontFamily="@font/kanitsemibold" />
             </androidx.cardview.widget.CardView>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Add Expense"
-                android:textColor="@android:color/white"
-                android:textSize="28sp"
-                android:textStyle="bold" 
-            android:fontFamily="@font/kanitbold" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Expense"
+                    android:textColor="@android:color/white"
+                    android:textSize="30sp"
+                    android:letterSpacing="0.01"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/kanitbold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Track your spending"
+                    android:textColor="#94A3B8"
+                    android:textSize="14sp"
+                    android:letterSpacing="0.02"
+                    android:fontFamily="@font/kanitmedium" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- AdMob Banner Ad -->
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adViewExpense"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:adSize="BANNER"
-            app:adUnitId="ca-app-pub-5829896408548217/7956505587"/>
+            android:layout_marginTop="24dp"
+            app:cardBackgroundColor="#1E293B"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp">
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adViewExpense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:adSize="BANNER"
+                app:adUnitId="ca-app-pub-5829896408548217/7956505587"/>
+        </androidx.cardview.widget.CardView>
 
         <!-- Description -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:text="Description"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" 
-            android:fontFamily="@font/kanitmedium" />
+            android:textColor="#E2E8F0"
+            android:textSize="15sp"
+            android:letterSpacing="0.02"
+            android:fontFamily="@font/kanitsemibold" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             app:boxBackgroundColor="#1E293B"
             app:boxBackgroundMode="filled"
-            app:boxCornerRadiusBottomEnd="12dp"
-            app:boxCornerRadiusBottomStart="12dp"
-            app:boxCornerRadiusTopEnd="12dp"
-            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusTopStart="16dp"
             app:boxStrokeWidth="0dp"
             app:hintTextColor="#64748B">
 
@@ -86,40 +114,41 @@
                 android:id="@+id/etDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="e.g., Dinner, Groceries"
+                android:hint="e.g., Dinner, Groceries, Movie tickets"
                 android:inputType="text"
-                android:padding="16dp"
+                android:padding="18dp"
                 android:textColor="@android:color/white"
                 android:textColorHint="#64748B"
-                android:textSize="16sp" 
-            android:fontFamily="@font/kanitmedium" />
+                android:textSize="16sp"
+                android:fontFamily="@font/kanitmedium" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Amount -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:text="Amount"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" 
-            android:fontFamily="@font/kanitmedium" />
+            android:textColor="#E2E8F0"
+            android:textSize="15sp"
+            android:letterSpacing="0.02"
+            android:fontFamily="@font/kanitsemibold" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             app:boxBackgroundColor="#1E293B"
             app:boxBackgroundMode="filled"
-            app:boxCornerRadiusBottomEnd="12dp"
-            app:boxCornerRadiusBottomStart="12dp"
-            app:boxCornerRadiusTopEnd="12dp"
-            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusTopStart="16dp"
             app:boxStrokeWidth="0dp"
             app:hintTextColor="#64748B"
             app:prefixText="₹ "
-            app:prefixTextColor="@android:color/white">
+            app:prefixTextColor="#10B981">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etAmount"
@@ -127,156 +156,202 @@
                 android:layout_height="wrap_content"
                 android:hint="0.00"
                 android:inputType="numberDecimal"
-                android:padding="16dp"
+                android:padding="18dp"
                 android:textColor="@android:color/white"
                 android:textColorHint="#64748B"
-                android:textSize="16sp" 
-            android:fontFamily="@font/kanitmedium" />
+                android:textSize="16sp"
+                android:fontFamily="@font/kanitmedium" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Select Group -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:text="Group"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" 
-            android:fontFamily="@font/kanitmedium" />
+            android:textColor="#E2E8F0"
+            android:textSize="15sp"
+            android:letterSpacing="0.02"
+            android:fontFamily="@font/kanitsemibold" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSelectGroup"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/transparent"
-            android:text="Select a group"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" 
-            android:fontFamily="@font/kanitmedium" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="#1E293B"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSelectGroup"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@android:color/transparent"
+                android:text="Select a group"
+                android:textAlignment="textStart"
+                android:paddingHorizontal="18dp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/kanitmedium" />
+        </androidx.cardview.widget.CardView>
 
         <!-- Paid By -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:text="Paid By"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" 
-            android:fontFamily="@font/kanitmedium" />
+            android:textColor="#E2E8F0"
+            android:textSize="15sp"
+            android:letterSpacing="0.02"
+            android:fontFamily="@font/kanitsemibold" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSelectPaidBy"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/transparent"
-            android:text="You"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" 
-            android:fontFamily="@font/kanitmedium" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="#1E293B"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSelectPaidBy"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@android:color/transparent"
+                android:text="You"
+                android:textAlignment="textStart"
+                android:paddingHorizontal="18dp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/kanitmedium" />
+        </androidx.cardview.widget.CardView>
 
         <!-- Split Type -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="28dp"
             android:text="Split Type"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:fontFamily="@font/kanitmedium" />
+            android:textColor="#E2E8F0"
+            android:textSize="15sp"
+            android:letterSpacing="0.02"
+            android:fontFamily="@font/kanitsemibold" />
 
-        <RadioGroup
-            android:id="@+id/rgSplitType"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="#1E293B"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp">
 
-            <RadioButton
-                android:id="@+id/rbEqual"
-                android:layout_width="0dp"
+            <RadioGroup
+                android:id="@+id/rgSplitType"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="Equal"
-                android:textColor="@android:color/white"
-                android:buttonTint="#6366F1"
-                android:fontFamily="@font/kanitmedium" />
+                android:orientation="horizontal"
+                android:padding="6dp">
 
-            <RadioButton
-                android:id="@+id/rbUnequal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Unequal"
-                android:textColor="@android:color/white"
-                android:buttonTint="#6366F1"
-                android:fontFamily="@font/kanitmedium" />
+                <RadioButton
+                    android:id="@+id/rbEqual"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="Equal"
+                    android:textColor="@android:color/white"
+                    android:buttonTint="#6366F1"
+                    android:padding="12dp"
+                    android:fontFamily="@font/kanitmedium" />
 
-            <RadioButton
-                android:id="@+id/rbPercentage"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Percent"
-                android:textColor="@android:color/white"
-                android:buttonTint="#6366F1"
-                android:fontFamily="@font/kanitmedium" />
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/rbUnequal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Unequal"
+                    android:textColor="@android:color/white"
+                    android:buttonTint="#6366F1"
+                    android:padding="12dp"
+                    android:fontFamily="@font/kanitmedium" />
+
+                <RadioButton
+                    android:id="@+id/rbPercentage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Percent"
+                    android:textColor="@android:color/white"
+                    android:buttonTint="#6366F1"
+                    android:padding="12dp"
+                    android:fontFamily="@font/kanitmedium" />
+            </RadioGroup>
+        </androidx.cardview.widget.CardView>
 
         <!-- Validation message -->
         <TextView
             android:id="@+id/tvSplitValidation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:text=""
             android:textColor="#EF4444"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:visibility="gone"
-            android:fontFamily="@font/kanitregular" />
+            android:fontFamily="@font/kanitmedium" />
 
         <!-- Split Among -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:text="Split Among"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:fontFamily="@font/kanitmedium" />
+            android:textColor="#E2E8F0"
+            android:textSize="15sp"
+            android:letterSpacing="0.02"
+            android:fontFamily="@font/kanitsemibold" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             app:cardBackgroundColor="#1E293B"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="0dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvSplitAmong"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                android:padding="12dp" />
+                android:padding="16dp" />
         </androidx.cardview.widget.CardView>
 
         <!-- Add Expense Button -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnAddExpense"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="32dp"
-            android:background="#6366F1"
-            android:text="Add Expense"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" 
-            android:fontFamily="@font/kanitsemibold" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="#6366F1"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnAddExpense"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@android:color/transparent"
+                android:text="Add Expense"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:letterSpacing="0.02"
+                android:textStyle="bold"
+                android:fontFamily="@font/kanitsemibold" />
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </ScrollView>

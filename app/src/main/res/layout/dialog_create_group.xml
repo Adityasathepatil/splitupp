@@ -3,41 +3,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="24dp"
+    android:layout_margin="28dp"
     app:cardBackgroundColor="#1E293B"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="0dp">
+    app:cardCornerRadius="28dp"
+    app:cardElevation="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="28dp">
 
         <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="4dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Create Group"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:textStyle="bold" 
-            android:fontFamily="@font/kanitbold" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create Group"
+                    android:textColor="@android:color/white"
+                    android:textSize="26sp"
+                    android:letterSpacing="0.01"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/kanitbold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Start tracking together"
+                    android:textColor="#94A3B8"
+                    android:textSize="14sp"
+                    android:letterSpacing="0.02"
+                    android:fontFamily="@font/kanitmedium" />
+            </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/btnClose"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 app:cardBackgroundColor="#334155"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp">
+                app:cardCornerRadius="22dp"
+                app:cardElevation="4dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -45,8 +63,8 @@
                     android:gravity="center"
                     android:text="✕"
                     android:textColor="@android:color/white"
-                    android:textSize="20sp" 
-            android:fontFamily="@font/kanitsemibold" />
+                    android:textSize="22sp"
+                    android:fontFamily="@font/kanitsemibold" />
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 
@@ -54,58 +72,67 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Group Name"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" 
+            android:layout_marginTop="28dp"
+            android:text="GROUP NAME"
+            android:textColor="#CBD5E1"
+            android:textSize="13sp"
+            android:letterSpacing="0.08"
             android:fontFamily="@font/kanitsemibold" />
 
-        <EditText
-            android:id="@+id/etGroupName"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_edittext_bg"
-            android:hint="e.g., Trip to Paris, Office Party"
-            android:inputType="text"
-            android:padding="16dp"
-            android:textColor="@android:color/white"
-            android:textColorHint="#64748B"
-            android:textSize="16sp" 
-            android:fontFamily="@font/kanitmedium" />
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="#0F172A"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp">
+
+            <EditText
+                android:id="@+id/etGroupName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="e.g., Trip to Paris, Office Party"
+                android:inputType="text"
+                android:padding="18dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="#64748B"
+                android:textSize="16sp"
+                android:fontFamily="@font/kanitmedium" />
+        </androidx.cardview.widget.CardView>
 
         <!-- Info Card -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             app:cardBackgroundColor="#0F172A"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:padding="18dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="💡"
-                    android:textSize="20sp" 
-            android:fontFamily="@font/kanitsemibold" />
+                    android:textSize="24sp"
+                    android:fontFamily="@font/kanitsemibold" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="14dp"
                     android:layout_weight="1"
                     android:text="After creating the group, share the generated code with friends to let them join"
                     android:textColor="#94A3B8"
-                    android:textSize="13sp" 
-            android:fontFamily="@font/kanitregular" />
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="4dp"
+                    android:fontFamily="@font/kanitregular" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -114,99 +141,133 @@
             android:id="@+id/cvGeneratedCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="28dp"
             android:visibility="gone"
             app:cardBackgroundColor="#0F172A"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="✓ Group Created Successfully!"
-                    android:textColor="#10B981"
-                    android:textSize="16sp"
-                    android:textStyle="bold" 
-            android:fontFamily="@font/kanitsemibold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Share this code with others to join:"
-                    android:textColor="#94A3B8"
-                    android:textSize="14sp" 
-            android:fontFamily="@font/kanitmedium" />
+                android:padding="24dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/rounded_edittext_bg"
-                    android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:gravity="center_vertical">
 
                     <TextView
-                        android:id="@+id/tvGroupCode"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:letterSpacing="0.2"
-                        android:text="ABC123"
-                        android:textColor="@android:color/white"
+                        android:text="✓"
+                        android:textColor="#10B981"
                         android:textSize="24sp"
-                        android:textStyle="bold" 
-            android:fontFamily="@font/kanitbold" />
+                        android:textStyle="bold"
+                        android:fontFamily="@font/kanitbold" />
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/btnCopyCode"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="12dp"
-                        app:cardBackgroundColor="#6366F1"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="📋"
-                            android:textSize="18sp" 
-            android:fontFamily="@font/kanitsemibold" />
-                    </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Group Created Successfully!"
+                        android:textColor="#10B981"
+                        android:textSize="17sp"
+                        android:letterSpacing="0.01"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/kanitsemibold" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Tap to copy"
+                    android:layout_marginTop="16dp"
+                    android:text="Share this code with others to join:"
+                    android:textColor="#CBD5E1"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/kanitmedium" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    app:cardBackgroundColor="#1E293B"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:id="@+id/tvGroupCode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:letterSpacing="0.2"
+                            android:text="ABC123"
+                            android:textColor="@android:color/white"
+                            android:textSize="26sp"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/kanitbold" />
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/btnCopyCode"
+                            android:layout_width="46dp"
+                            android:layout_height="46dp"
+                            android:layout_marginStart="12dp"
+                            app:cardBackgroundColor="#6366F1"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="4dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="📋"
+                                android:textSize="20sp"
+                                android:fontFamily="@font/kanitsemibold" />
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Tap the button to copy code"
                     android:textColor="#64748B"
-                    android:textSize="12sp" 
-            android:fontFamily="@font/kanitregular" />
+                    android:textSize="13sp"
+                    android:fontFamily="@font/kanitregular" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Create Group Button -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnCreateGroup"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/rounded_button_primary_bg"
-            android:text="Create Group"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" 
-            android:fontFamily="@font/kanitsemibold" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            app:cardBackgroundColor="#6366F1"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCreateGroup"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@android:color/transparent"
+                android:text="Create Group"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:letterSpacing="0.02"
+                android:textStyle="bold"
+                android:fontFamily="@font/kanitsemibold" />
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
