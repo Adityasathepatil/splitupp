@@ -259,13 +259,13 @@
                         android:id="@+id/tvPhoneLabel"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Phone"
+                        android:text="Phone Number"
                         android:textColor="@color/profile_text_secondary"
                         android:textSize="12sp"
                         android:fontFamily="@font/kanitregular"
                         android:layout_marginStart="16dp"
                         app:layout_constraintStart_toEndOf="@id/cardPhoneIcon"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/ivEditPhone"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -279,8 +279,19 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="4dp"
                         app:layout_constraintStart_toEndOf="@id/cardPhoneIcon"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/ivEditPhone"
                         app:layout_constraintTop_toBottomOf="@id/tvPhoneLabel"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ivEditPhone"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_edit"
+                        app:tint="@color/profile_icon_phone"
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

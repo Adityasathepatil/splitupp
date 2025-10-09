@@ -15,11 +15,13 @@ class NetworkManager(private val context: Context) : LiveData<Boolean>() {
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
-            postValue(true)
+            // Don't immediately assume internet is available, wait for validation
+            checkCurrentConnection()
         }
 
         override fun onLost(network: Network) {
-            postValue(false)
+            // Check if there are any other active networks before marking as lost
+            checkCurrentConnection()
         }
 
         override fun onCapabilitiesChanged(
