@@ -72,6 +72,11 @@
             android:theme="@style/Theme.Splitup" />
 
         <activity
+            android:name=".AnalyticsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Splitup" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/app_name"

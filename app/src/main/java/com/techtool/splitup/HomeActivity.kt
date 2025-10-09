@@ -92,6 +92,10 @@ class HomeActivity : BaseActivity() {
             startActivity(Intent(this, SettleUpActivity::class.java))
         }
 
+        binding.cardAnalytics.setOnClickListener {
+            startActivity(Intent(this, AnalyticsActivity::class.java))
+        }
+
         binding.tvViewAll.setOnClickListener {
             startActivity(Intent(this, AllGroupsActivity::class.java))
         }
