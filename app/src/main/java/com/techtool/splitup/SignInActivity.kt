@@ -1,15 +1,22 @@
 package com.techtool.splitup
 
 import android.content.Intent
+import android.content.IntentSender
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.techtool.splitup.databinding.ActivitySignInBinding
@@ -18,11 +25,41 @@ class SignInActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySignInBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var oneTapClient: SignInClient
+    private lateinit var signInRequest: BeginSignInRequest
     private lateinit var googleSignInClient: GoogleSignInClient
 
+    // One Tap Sign In launcher
+    private val oneTapSignInLauncher = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        hideGoogleSignInLoading()
+        try {
+            val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
+            val idToken = credential.googleIdToken
+            if (idToken != null) {
+                firebaseAuthWithGoogle(idToken)
+            } else {
+                android.util.Log.e("GoogleSignIn", "No ID token from One Tap")
+                // Fall back to traditional sign in
+                signInWithGoogleTraditional()
+            }
+        } catch (e: ApiException) {
+            android.util.Log.e("GoogleSignIn", "One Tap failed: ${e.statusCode} - ${e.message}")
+            // Fall back to traditional sign in if One Tap fails
+            signInWithGoogleTraditional()
+        } catch (e: Exception) {
+            android.util.Log.e("GoogleSignIn", "Unexpected error in One Tap: ${e.message}", e)
+            hideGoogleSignInLoading()
+            Toast.makeText(this, "Sign in failed. Please try again.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Traditional Google Sign In launcher (fallback)
     private val googleSignInLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
+        hideGoogleSignInLoading()
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
             val account = task.getResult(ApiException::class.java)
@@ -53,7 +90,26 @@ class SignInActivity : BaseActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        // Configure Google Sign In
+        // Check if user is already signed in
+        if (auth.currentUser != null) {
+            navigateToMain()
+            return
+        }
+
+        // Initialize One Tap Sign In client
+        oneTapClient = Identity.getSignInClient(this)
+        signInRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId(getString(R.string.default_web_client_id))
+                    .setFilterByAuthorizedAccounts(false) // Show all accounts, not just previously authorized
+                    .build()
+            )
+            .setAutoSelectEnabled(true) // Auto-select if only one account
+            .build()
+
+        // Configure traditional Google Sign In (fallback)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -166,22 +222,62 @@ class SignInActivity : BaseActivity() {
     }
 
     private fun signInWithGoogle() {
-        // Sign out first to ensure a fresh sign-in process and account selection
-        googleSignInClient.signOut().addOnCompleteListener {
-            val signInIntent = googleSignInClient.signInIntent
-            googleSignInLauncher.launch(signInIntent)
-        }
+        showGoogleSignInLoading()
+
+        // Try One Tap Sign In first
+        oneTapClient.beginSignIn(signInRequest)
+            .addOnSuccessListener { result ->
+                try {
+                    val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
+                    oneTapSignInLauncher.launch(intentSenderRequest)
+                } catch (e: IntentSender.SendIntentException) {
+                    android.util.Log.e("GoogleSignIn", "Couldn't start One Tap UI: ${e.message}")
+                    // Fall back to traditional sign in
+                    signInWithGoogleTraditional()
+                }
+            }
+            .addOnFailureListener { e ->
+                android.util.Log.e("GoogleSignIn", "One Tap Sign In failed: ${e.message}")
+                // Fall back to traditional sign in
+                signInWithGoogleTraditional()
+            }
+    }
+
+    private fun signInWithGoogleTraditional() {
+        android.util.Log.d("GoogleSignIn", "Using traditional Google Sign In")
+        val signInIntent = googleSignInClient.signInIntent
+        googleSignInLauncher.launch(signInIntent)
+    }
+
+    private fun showGoogleSignInLoading() {
+        binding.btnGoogleSignIn.isEnabled = false
+        binding.btnGoogleSignIn.text = "Signing in..."
+    }
+
+    private fun hideGoogleSignInLoading() {
+        binding.btnGoogleSignIn.isEnabled = true
+        binding.btnGoogleSignIn.text = "Sign in with Google"
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
+        showGoogleSignInLoading()
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
+                hideGoogleSignInLoading()
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "Google sign in successful!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Welcome!", Toast.LENGTH_SHORT).show()
                     navigateToMain()
                 } else {
-                    Toast.makeText(this, "Authentication failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    val errorMessage = when {
+                        task.exception?.message?.contains("network error", ignoreCase = true) == true ->
+                            "Network error. Please check your connection"
+                        task.exception?.message?.contains("account exists", ignoreCase = true) == true ->
+                            "An account with this email already exists with a different sign-in method"
+                        else -> "Authentication failed. Please try again"
+                    }
+                    android.util.Log.e("GoogleSignIn", "Firebase auth failed: ${task.exception?.message}", task.exception)
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
                 }
             }
     }
@@ -226,34 +322,41 @@ class SignInActivity : BaseActivity() {
 
     private fun handleGoogleSignInError(e: ApiException) {
         val errorMessage = when (e.statusCode) {
-            10 -> {
+            CommonStatusCodes.DEVELOPER_ERROR, 10 -> {
                 // DEVELOPER_ERROR - Most common cause: SHA-1 certificate not registered in Firebase Console
                 android.util.Log.e("GoogleSignIn", "Error 10: DEVELOPER_ERROR - Status: ${e.statusCode}, Message: ${e.message}")
-                "Configuration Error: Please ensure your SHA-1 certificate is added to Firebase Console.\n\nTo fix:\n1. Run: ./gradlew signingReport\n2. Copy SHA-1 fingerprint\n3. Add to Firebase Console"
+                "Configuration Error: Please ensure your SHA-1 certificate is added to Firebase Console"
             }
-            7 -> {
+            CommonStatusCodes.NETWORK_ERROR, 7 -> {
                 // NETWORK_ERROR
                 "Network error. Please check your internet connection"
             }
-            12501 -> {
-                // SIGN_IN_CANCELLED
-                "Sign in cancelled"
+            CommonStatusCodes.CANCELED, 12501 -> {
+                // SIGN_IN_CANCELLED - User closed the dialog
+                android.util.Log.d("GoogleSignIn", "Sign in cancelled by user")
+                null // Don't show error for user cancellation
             }
             12502 -> {
                 // SIGN_IN_CURRENTLY_IN_PROGRESS
-                "Sign in already in progress"
+                "Sign in already in progress. Please wait."
             }
-            16 -> {
+            CommonStatusCodes.INTERNAL_ERROR, 16 -> {
                 // INTERNAL_ERROR
                 "An internal error occurred. Please try again"
             }
+            CommonStatusCodes.API_NOT_CONNECTED, 17 -> {
+                // API_NOT_CONNECTED
+                "Google Play Services is not available. Please update Google Play Services"
+            }
             else -> {
                 android.util.Log.e("GoogleSignIn", "Error: ${e.statusCode} - ${e.message}")
-                "Google sign in failed (Error ${e.statusCode}): ${e.message}"
+                "Sign in failed. Please try again"
             }
         }
 
-        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+        errorMessage?.let {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun navigateToMain() {
